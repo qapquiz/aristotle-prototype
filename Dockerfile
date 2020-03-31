@@ -11,4 +11,5 @@ COPY . .
 
 RUN go build
 
+EXPOSE 5000
 CMD ["aristotle"]
