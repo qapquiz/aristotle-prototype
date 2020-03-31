@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <title>Melody example: chatting</title>
+</head>
+
+<style>
+    #chat {
+        text-align: left;
+        background: #f1f1f1;
+        width: 500px;
+        min-height: 300px;
+        padding: 20px;
+    }
+</style>
+
+<body>
+    <center>
+        <h3>Send question</h3>
+        channel:<input placeholder="channel" id="channel" type="text">
+        <br>
+        question:<input placeholder="message" id="message" type="text"><button id="send">Send</button>
+    </center>
+
+    <script>
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        var chan = document.getElementById("channel");
+        var question = document.getElementById("message");
+        var send = document.getElementById("send");
+
+        send.onclick = async function () {
+            if (chan.value != "" && question.value != "") {
+                var url = "ws://" + window.location.host + "/channel/" + chan.value + "/ws";
+                var ws = new WebSocket(url);
+
+                while(ws.readyState === 0) {
+                    await sleep(200)
+                }
+                ws.send(chan.value + ":" + question.value);
+
+                question.value = "";
+                //   window.location = "/channel/" + chan.value;
+            }
+        };
+
+    </script>
+</body>
+
+</html>
